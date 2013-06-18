@@ -7,7 +7,6 @@
 //
 
 #import "MZMaze.h"
-#import "MZRoom.h"
 
 @implementation MZMaze
 
@@ -121,20 +120,15 @@
     }
 }
 
--(void)iterateRooms:(void(^)(MZRoom *room))block
+-(void)iterateRooms:(void(^)(MZRoom *room, int x, int y))block
 {
-    for (int i = 0; i<self.width; i++) {
+    for (int i = 0; i<self.size.width; i++) {
         
-        self.maze[i] = [NSMutableArray array];
-        
-        for (int j = 0; j<self.height; j++) {
+        for (int j = 0; j<self.size.height; j++) {
             
-            MZRoom *newRoom = [MZRoom new];
+            MZRoom *foundRoom = self.maze[i][j];
             
-            newRoom.x = i;
-            newRoom.y = j;
-            
-            self.maze[i][j] = newRoom;
+            if (block) block(foundRoom, i , j);
             
         }
     }

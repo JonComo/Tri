@@ -10,9 +10,14 @@
 #import "JCControlPad.h"
 #import "TRBox.h"
 #import "TRPlayer.h"
+#import "MZMaze.h"
 
 @interface TRMyScene () <JCControlPadDelegate>
 {
+    SKNode *sceneNode;
+    
+    MZMaze *maze;
+    
     TRPlayer *player;
     JCControlPad *movePad;
     JCControlPad *jumpPad;
@@ -27,15 +32,12 @@
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
+        sceneNode = [SKNode new];
+        [self addChild:sceneNode];
+        
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
-        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
-        
-        SKSpriteNode *ground = [[SKSpriteNode alloc] initWithTexture:nil color:[UIColor orangeColor] size:CGSizeMake(640, 20)];
-        ground.position = CGPointMake(0, 200);
-        ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ground.size];
-        [ground.physicsBody setDynamic:NO];
-        [self addChild:ground];
+        self.physicsWorld.gravity = CGPointZero;
         
         movePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(80, 80, 100, 100) delegate:self];
         [self addChild:movePad];
@@ -46,8 +48,29 @@
         jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
         [self addChild:jumpPad];
         
-        player = [[TRPlayer alloc] initWithPosition:CGPointMake(150, 450)];
-        [self addChild:player];
+        player = [[TRPlayer alloc] initWithPosition:CGPointMake(200, 200)];
+        [sceneNode addChild:player];
+        
+        maze = [[MZMaze alloc] initWithSize:CGSizeMake(100, 5)];
+        
+        CGSize roomSize = CGSizeMake(200, 200);
+        float wallThickness = 10;
+        
+        [maze iterateRooms:^(MZRoom *room, int x, int y) {
+            
+            if (!room.N)
+                [sceneNode addChild:[[TRBox alloc] initWithRect:CGRectMake(x * roomSize.width, y * roomSize.height + roomSize.height/2, roomSize.width, wallThickness) texture:nil color:[UIColor orangeColor]]];
+            
+            if (!room.S)
+                [sceneNode addChild:[[TRBox alloc] initWithRect:CGRectMake(x * roomSize.width, y * roomSize.height - roomSize.height/2, roomSize.width, wallThickness) texture:nil color:[UIColor orangeColor]]];
+            
+            if (!room.E)
+                [sceneNode addChild:[[TRBox alloc] initWithRect:CGRectMake(x * roomSize.width + roomSize.width/2, y * roomSize.height, wallThickness, roomSize.height) texture:nil color:[UIColor orangeColor]]];
+            
+            if (!room.W)
+                [sceneNode addChild:[[TRBox alloc] initWithRect:CGRectMake(x * roomSize.width - roomSize.width/2, y * roomSize.height, wallThickness, roomSize.height) texture:nil color:[UIColor orangeColor]]];
+            
+        }];
     }
     
     return self;
@@ -57,11 +80,11 @@
 {
     for (UITouch *touch in touches)
     {
-        CGPoint location = [touch locationInNode:self];
+        CGPoint location = [touch locationInNode:sceneNode];
         
         TRBox *box = [[TRBox alloc] initWithRect:CGRectMake(location.x, location.y, 20, 20) texture:nil color:[UIColor orangeColor]];
         box.physicsBody.mass = 0.001;
-        [self addChild:box];
+        [sceneNode addChild:box];
         
     }
 }
@@ -72,6 +95,11 @@
     
     [player update:currentTime];
     [movePad update:currentTime];
+}
+
+-(void)didSimulatePhysics
+{
+    sceneNode.position = CGPointMake(-player.position.x + 160, -player.position.y + 300);
 }
 
 -(void)controlPad:(JCControlPad *)pad changedInputWithDirection:(float)direction intensity:(float)intensity

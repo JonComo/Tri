@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class MZRoom;
+#import "MZRoom.h"
 
 @interface MZMaze : NSObject
 
@@ -16,6 +15,6 @@
 @property CGSize size;
 
 -(id)initWithSize:(CGSize)mazeSize;
--(void)iterateRooms:(void(^)(MZRoom *room))block;
+-(void)iterateRooms:(void(^)(MZRoom *room, int x, int y))block;
 
 @end

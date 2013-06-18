@@ -22,6 +22,7 @@
         self.size = frame.size;
         
         self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:self.size];
+        [self.physicsBody setDynamic:NO];
     }
     
     return self;
