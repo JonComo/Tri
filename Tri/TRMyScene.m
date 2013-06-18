@@ -7,6 +7,19 @@
 //
 
 #import "TRMyScene.h"
+#import "JCControlPad.h"
+#import "TRBox.h"
+#import "TRPlayer.h"
+
+@interface TRMyScene () <JCControlPadDelegate>
+{
+    TRPlayer *player;
+    JCControlPad *movePad;
+    JCControlPad *jumpPad;
+    JCControlPad *strikePad;
+}
+
+@end
 
 @implementation TRMyScene
 
@@ -16,38 +29,66 @@
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
-        SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
         
-        myLabel.text = @"Hello, World!";
-        myLabel.fontSize = 30;
-        myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
+        SKSpriteNode *ground = [[SKSpriteNode alloc] initWithTexture:nil color:[UIColor orangeColor] size:CGSizeMake(640, 20)];
+        ground.position = CGPointMake(0, 200);
+        ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ground.size];
+        [ground.physicsBody setDynamic:NO];
+        [self addChild:ground];
         
-        [self addChild:myLabel];
+        movePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(80, 80, 100, 100) delegate:self];
+        [self addChild:movePad];
+        
+        strikePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 20 - 60 - 20 - 40, 80, 60, 100) delegate:self];
+        [self addChild:strikePad];
+        
+        jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
+        [self addChild:jumpPad];
+        
+        player = [[TRPlayer alloc] initWithPosition:CGPointMake(150, 450)];
+        [self addChild:player];
     }
+    
     return self;
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    /* Called when a touch begins */
-    
-    for (UITouch *touch in touches) {
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    for (UITouch *touch in touches)
+    {
         CGPoint location = [touch locationInNode:self];
         
-        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
+        TRBox *box = [[TRBox alloc] initWithRect:CGRectMake(location.x, location.y, 20, 20) texture:nil color:[UIColor orangeColor]];
+        box.physicsBody.mass = 0.001;
+        [self addChild:box];
         
-        sprite.position = location;
-        
-        SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
-        
-        [sprite runAction:[SKAction repeatActionForever:action]];
-        
-        [self addChild:sprite];
     }
 }
 
--(void)update:(CFTimeInterval)currentTime {
+-(void)update:(CFTimeInterval)currentTime
+{
     /* Called before each frame is rendered */
+    
+    [player update:currentTime];
+    [movePad update:currentTime];
+}
+
+-(void)controlPad:(JCControlPad *)pad changedInputWithDirection:(float)direction intensity:(float)intensity
+{
+    if (pad == movePad)
+    {
+        [player runInDirection:direction intensity:intensity];
+    }
+}
+
+-(void)controlPad:(JCControlPad *)pad beganTouch:(UITouch *)touch
+{
+    if (pad == jumpPad)
+        [player.physicsBody applyImpulse:CGPointMake(0, 20)];
+    
+    if (pad == strikePad)
+        [player strike];
 }
 
 @end
