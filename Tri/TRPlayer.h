@@ -10,9 +10,11 @@
 
 @interface TRPlayer : TRObject
 
+@property (nonatomic, strong) SKNode *weilding;
+
 -(id)initWithPosition:(CGPoint)position;
 
 -(void)runInDirection:(float)direction intensity:(float)intensity;
--(void)strike;
+-(void)strike:(BOOL)strike;
 
 @end

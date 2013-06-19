@@ -45,8 +45,8 @@
         strikePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 20 - 60 - 20 - 40, 80, 60, 100) delegate:self];
         [self addChild:strikePad];
         
-        jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
-        [self addChild:jumpPad];
+        //jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
+        //[self addChild:jumpPad];
         
         player = [[TRPlayer alloc] initWithPosition:CGPointMake(300, 300)];
         [sceneNode addChild:player];
@@ -104,18 +104,23 @@
 
 -(void)controlPad:(JCControlPad *)pad changedInputWithDirection:(float)direction intensity:(float)intensity
 {
-    if (pad == movePad)
-    {
+    if (pad == movePad){
         [player runInDirection:direction intensity:intensity];
     }
 }
 
 -(void)controlPad:(JCControlPad *)pad beganTouch:(UITouch *)touch
 {
-    if (pad == jumpPad)
-    
-    if (pad == strikePad)
-        [player strike];
+    if (pad == strikePad){
+        [player strike:YES];
+    }
+}
+
+-(void)controlPad:(JCControlPad *)pad endedTouch:(UITouch *)touch
+{
+    if (pad == strikePad){
+        [player strike:NO];
+    }
 }
 
 @end

@@ -13,6 +13,7 @@
     SKAction *actionRun;
     SKAction *actionStanding;
     BOOL isRunning;
+    BOOL isStriking;
 }
 
 -(id)initWithPosition:(CGPoint)position
@@ -37,6 +38,11 @@
     }
     
     return self;
+}
+
+-(void)sword
+{
+    SKSpriteNode *sword = [[SKSpriteNode alloc] initWithImageNamed:@"sword"];
 }
 
 -(UIBezierPath *)trianglePath
@@ -70,6 +76,8 @@
 
 -(void)runInDirection:(float)direction intensity:(float)intensity
 {
+    if (isStriking) return;
+    
     intensity *= 100;
     
     CGPoint force = CGPointMake(cosf(direction) * intensity, sinf(direction) * intensity);
@@ -84,8 +92,10 @@
     self.physicsBody.velocity = CGPointMake(self.physicsBody.velocity.x * 0.8, self.physicsBody.velocity.y * 0.8);
 }
 
--(void)strike
+-(void)strike:(BOOL)strike
 {
+    isStriking = strike;
+    
     [self runAction:actionRun];
 }
 
