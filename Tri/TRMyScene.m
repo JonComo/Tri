@@ -84,6 +84,7 @@
         
         TRBox *box = [[TRBox alloc] initWithRect:CGRectMake(location.x, location.y, 20, 20) texture:nil color:[UIColor orangeColor]];
         box.physicsBody.mass = 0.001;
+        [box.physicsBody setDynamic:YES];
         [sceneNode addChild:box];
         
     }
