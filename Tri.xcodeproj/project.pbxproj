@@ -30,6 +30,7 @@
 		8666A4E3176BE56500AF0250 /* TRPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865C0730176BE51B0038C04A /* TRPlayer.m */; };
 		8666A4E9176BE5CE00AF0250 /* running.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8666A4E6176BE5CE00AF0250 /* running.atlas */; };
 		8666A4ED176BE94600AF0250 /* TRObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8666A4EC176BE81F00AF0250 /* TRObject.m */; };
+		86B7E764177128560043F292 /* items.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 86B7E763177128560043F292 /* items.atlas */; };
 		86D618F017701FC30087B425 /* MZMaze.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D618ED17701FC30087B425 /* MZMaze.m */; };
 		86D618F117701FC30087B425 /* MZRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D618EF17701FC30087B425 /* MZRoom.m */; };
 /* End PBXBuildFile section */
@@ -79,6 +80,7 @@
 		8666A4E6176BE5CE00AF0250 /* running.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = running.atlas; sourceTree = "<group>"; };
 		8666A4EB176BE81F00AF0250 /* TRObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRObject.h; sourceTree = "<group>"; };
 		8666A4EC176BE81F00AF0250 /* TRObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TRObject.m; sourceTree = "<group>"; };
+		86B7E763177128560043F292 /* items.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = items.atlas; sourceTree = "<group>"; };
 		86D618EC17701FC30087B425 /* MZMaze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZMaze.h; sourceTree = "<group>"; };
 		86D618ED17701FC30087B425 /* MZMaze.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZMaze.m; sourceTree = "<group>"; };
 		86D618EE17701FC30087B425 /* MZRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZRoom.h; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		8666A4E4176BE5CE00AF0250 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				86B7E763177128560043F292 /* items.atlas */,
 				8666A4E5176BE5CE00AF0250 /* triPlayer */,
 			);
 			path = media;
@@ -329,6 +332,7 @@
 			files = (
 				864175EC176BB987007FE27A /* InfoPlist.strings in Resources */,
 				865B39F9176BF22C001E3499 /* standing.atlas in Resources */,
+				86B7E764177128560043F292 /* items.atlas in Resources */,
 				864175FF176BB987007FE27A /* Images.xcassets in Resources */,
 				8666A4E9176BE5CE00AF0250 /* running.atlas in Resources */,
 				864175F5176BB987007FE27A /* Main.storyboard in Resources */,

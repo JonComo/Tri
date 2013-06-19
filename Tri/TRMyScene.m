@@ -48,12 +48,12 @@
         jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
         [self addChild:jumpPad];
         
-        player = [[TRPlayer alloc] initWithPosition:CGPointMake(200, 200)];
+        player = [[TRPlayer alloc] initWithPosition:CGPointMake(300, 300)];
         [sceneNode addChild:player];
         
         maze = [[MZMaze alloc] initWithSize:CGSizeMake(100, 5)];
         
-        CGSize roomSize = CGSizeMake(200, 200);
+        CGSize roomSize = CGSizeMake(300, 300);
         float wallThickness = 10;
         
         [maze iterateRooms:^(MZRoom *room, int x, int y) {
@@ -113,7 +113,6 @@
 -(void)controlPad:(JCControlPad *)pad beganTouch:(UITouch *)touch
 {
     if (pad == jumpPad)
-        [player.physicsBody applyImpulse:CGPointMake(0, 20)];
     
     if (pad == strikePad)
         [player strike];

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E30CDE6A-85CD-40B7-B338-8FC11EFFA010</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Tri</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8636C9DD-1E59-4285-92C1-E594F9D9637F</key>
+		<string>https://github.com/JonComo/Tri.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Tri.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8636C9DD-1E59-4285-92C1-E594F9D9637F</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/JonComo/Tri.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8636C9DD-1E59-4285-92C1-E594F9D9637F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8636C9DD-1E59-4285-92C1-E594F9D9637F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Tri</string>
+		</dict>
+	</array>
+</dict>
+</plist>
