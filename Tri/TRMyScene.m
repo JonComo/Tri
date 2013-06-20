@@ -28,7 +28,8 @@
 
 @implementation TRMyScene
 
--(id)initWithSize:(CGSize)size {    
+-(id)initWithSize:(CGSize)size
+{
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
@@ -39,16 +40,18 @@
         
         self.physicsWorld.gravity = CGPointZero;
         
-        movePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(80, 80, 100, 100) delegate:self];
+        int controlSize = 130;
+        
+        movePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(0, controlSize, controlSize, controlSize) delegate:self];
         [self addChild:movePad];
         
-        strikePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 20 - 60 - 20 - 40, 80, 60, 100) delegate:self];
+        strikePad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(size.width - controlSize, controlSize, controlSize, controlSize) delegate:self];
         [self addChild:strikePad];
         
         //jumpPad = [[JCControlPad alloc] initWithTouchRegion:CGRectMake(320 - 60, 80, 60, 100) delegate:self];
         //[self addChild:jumpPad];
         
-        player = [[TRPlayer alloc] initWithPosition:CGPointMake(300, 300)];
+        player = [[TRPlayer alloc] initWithPosition:CGPointMake(size.width/2, size.height/2)];
         [sceneNode addChild:player];
         
         maze = [[MZMaze alloc] initWithSize:CGSizeMake(100, 5)];
@@ -83,10 +86,10 @@
         CGPoint location = [touch locationInNode:sceneNode];
         
         TRBox *box = [[TRBox alloc] initWithRect:CGRectMake(location.x, location.y, 20, 20) texture:nil color:[UIColor orangeColor]];
+        
         box.physicsBody.mass = 0.001;
         [box.physicsBody setDynamic:YES];
         [sceneNode addChild:box];
-        
     }
 }
 
@@ -100,7 +103,7 @@
 
 -(void)didSimulatePhysics
 {
-    sceneNode.position = CGPointMake(-player.position.x + 160, -player.position.y + 300);
+    sceneNode.position = CGPointMake(-player.position.x + self.size.width/2, -player.position.y + self.size.height/2);
 }
 
 -(void)controlPad:(JCControlPad *)pad changedInputWithDirection:(float)direction intensity:(float)intensity

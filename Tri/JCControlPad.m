@@ -29,7 +29,7 @@
         self.alpha = 0.4;
         
         self.size = frame.size;
-        self.position = frame.origin;
+        self.position = CGPointMake(frame.origin.x + frame.size.width/2, frame.origin.y - frame.size.height/2);
         
         touchVisual = [[SKSpriteNode alloc] initWithColor:[UIColor orangeColor] size:CGSizeMake(20, 20)];
         
@@ -43,13 +43,16 @@
 
 -(void)update:(CFTimeInterval)currentTime
 {
-    if (isReceivingTouch && [self.delegate respondsToSelector:@selector(controlPad:changedInputWithDirection:intensity:)])
+    if (isReceivingTouch && self.intensity > 5 && [self.delegate respondsToSelector:@selector(controlPad:changedInputWithDirection:intensity:)])
         [self.delegate controlPad:self changedInputWithDirection:self.angle intensity:self.intensity];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isReceivingTouch = YES;
+    
+    self.intensity = 0;
+    self.angle = 0;
     
     if (!touchVisual.parent)
         [self addChild:touchVisual];
