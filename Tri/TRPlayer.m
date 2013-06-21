@@ -78,7 +78,7 @@
 {
     if (isStriking) return;
     
-    intensity *= 100;
+    intensity *= 400;
     
     CGPoint force = CGPointMake(cosf(direction) * intensity, sinf(direction) * intensity);
     

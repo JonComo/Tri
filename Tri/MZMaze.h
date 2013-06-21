@@ -12,9 +12,12 @@
 @interface MZMaze : NSObject
 
 @property (nonatomic, strong) NSMutableArray *maze;
+@property CGPoint currentRoom;
 @property CGSize size;
 
 -(id)initWithSize:(CGSize)mazeSize;
 -(void)iterateRooms:(void(^)(MZRoom *room, int x, int y))block;
+-(MZRoom *)roomAtX:(int)xPos y:(int)yPos checkFound:(BOOL)check;
+-(UIImage *)render;
 
 @end

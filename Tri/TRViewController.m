@@ -21,7 +21,7 @@
     [super viewWillAppear:animated];
     
     // Configure the view.
-    SKView * skView = (SKView *)self.view;
+    SKView *skView = (SKView *)self.view;
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
     
@@ -31,6 +31,14 @@
     
     // Present the scene.
     [skView presentScene:scene];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endGame) name:@"endGame" object:nil];
+}
+
+-(void)endGame
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotate

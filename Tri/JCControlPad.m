@@ -12,7 +12,10 @@
 @implementation JCControlPad
 {
     CGPoint initialTouchPosition;
+    CGPoint touchMovedPosition;
+    
     SKSpriteNode *touchVisual;
+    SKSpriteNode *initTouchVisual;
     
     BOOL isReceivingTouch;
     
@@ -26,14 +29,14 @@
         _delegate = controlDelegate;
         
         self.color = [UIColor redColor];
-        self.alpha = 0.4;
         
         self.size = frame.size;
-        self.position = CGPointMake(frame.origin.x + frame.size.width/2, frame.origin.y - frame.size.height/2);
+        self.position = frame.origin;
         
         touchVisual = [[SKSpriteNode alloc] initWithColor:[UIColor orangeColor] size:CGSizeMake(20, 20)];
+        initTouchVisual = [[SKSpriteNode alloc] initWithColor:[UIColor greenColor] size:CGSizeMake(20, 20)];
         
-        intensityMax = (self.size.width + self.size.height) / 4;
+        intensityMax = 20;
         
         [self setUserInteractionEnabled:YES];
     }
@@ -43,8 +46,9 @@
 
 -(void)update:(CFTimeInterval)currentTime
 {
-    if (isReceivingTouch && self.intensity > 5 && [self.delegate respondsToSelector:@selector(controlPad:changedInputWithDirection:intensity:)])
+    if (isReceivingTouch && self.intensity > 5 && [self.delegate respondsToSelector:@selector(controlPad:changedInputWithDirection:intensity:)]){
         [self.delegate controlPad:self changedInputWithDirection:self.angle intensity:self.intensity];
+    }
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -56,11 +60,14 @@
     
     if (!touchVisual.parent)
         [self addChild:touchVisual];
+    if (!initTouchVisual.parent)
+        [self addChild:initTouchVisual];
     
     UITouch *touch = [self closestTouchFromTouches:touches];
     
     initialTouchPosition = [touch locationInNode:self];
     touchVisual.position = initialTouchPosition;
+    initTouchVisual.position = initialTouchPosition;
     
     if ([self.delegate respondsToSelector:@selector(controlPad:beganTouch:)])
         [self.delegate controlPad:self beganTouch:touch];
@@ -70,15 +77,21 @@
 {
     UITouch *touch = [self closestTouchFromTouches:touches];
     
-    CGPoint touchMovedPosition = [touch locationInNode:self];
+    touchMovedPosition = [touch locationInNode:self];
         
     self.angle = [JCMath angleFromPoint:initialTouchPosition toPoint:touchMovedPosition];
     self.intensity = [JCMath distanceBetweenPoint:initialTouchPosition andPoint:touchMovedPosition sorting:NO];
     
     if (self.intensity > intensityMax)
+    {
+        //Move initial position towards touchMoved, as its literally moving the control stick
+        initialTouchPosition = [JCMath pointFromPoint:initialTouchPosition pushedBy:self.intensity - intensityMax inDirection:self.angle];
+        
         self.intensity = intensityMax;
+    }
     
     touchVisual.position = [JCMath pointFromPoint:initialTouchPosition pushedBy:self.intensity inDirection:self.angle];
+    initTouchVisual.position = initialTouchPosition;
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -89,6 +102,9 @@
     
     if (touchVisual.parent)
         [touchVisual removeFromParent];
+    
+    if (initTouchVisual.parent)
+        [initTouchVisual removeFromParent];
     
     if ([self.delegate respondsToSelector:@selector(controlPad:endedTouch:)])
         [self.delegate controlPad:self endedTouch:touch];

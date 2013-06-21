@@ -48,7 +48,6 @@
             newRoom.y = j;
             
             self.maze[i][j] = newRoom;
-            
         }
     }
     
@@ -70,16 +69,16 @@
         
         NSMutableArray *openRooms = [NSMutableArray array];
         
-        MZRoom *n = [self roomAtX:x y:y-1];
+        MZRoom *n = [self roomAtX:x y:y+1 checkFound:YES];
         if (n) [openRooms addObject:n];
         
-        MZRoom *s = [self roomAtX:x y:y+1];
+        MZRoom *s = [self roomAtX:x y:y-1 checkFound:YES];
         if (s) [openRooms addObject:s];
         
-        MZRoom *e = [self roomAtX:x+1 y:y];
+        MZRoom *e = [self roomAtX:x+1 y:y checkFound:YES];
         if (e) [openRooms addObject:e];
         
-        MZRoom *w = [self roomAtX:x-1 y:y];
+        MZRoom *w = [self roomAtX:x-1 y:y checkFound:YES];
         if (w) [openRooms addObject:w];
         
         if (openRooms.count > 0)
@@ -87,13 +86,13 @@
             MZRoom *randomRoom = [openRooms objectAtIndex:arc4random()%openRooms.count];
             
             if (randomRoom == n){
-                n.N = YES;
-                room.S = YES;
+                n.S = YES;
+                room.N = YES;
             }
             
             if (randomRoom == s){
-                s.S = YES;
-                room.N = YES;
+                s.N = YES;
+                room.S = YES;
             }
             
             if (randomRoom == e){
@@ -118,6 +117,8 @@
             }
         }
     }
+    
+    self.currentRoom = CGPointMake(1, 1);
 }
 
 -(void)iterateRooms:(void(^)(MZRoom *room, int x, int y))block
@@ -134,7 +135,7 @@
     }
 }
 
--(MZRoom *)roomAtX:(int)xPos y:(int)yPos
+-(MZRoom *)roomAtX:(int)xPos y:(int)yPos checkFound:(BOOL)check
 {
     if (xPos < 1)
         return nil;
@@ -148,10 +149,71 @@
     
     MZRoom *foundRoom = self.maze[xPos][yPos];
     
-    if (foundRoom.hasBeenVisited)
+    if (check && foundRoom.hasBeenVisited)
         return nil;
     
+    if (foundRoom)
+        self.currentRoom = CGPointMake(xPos, yPos);
+    
     return foundRoom;
+}
+
+-(UIImage *)render
+{
+    CGSize mazeSize = self.size;
+    
+    CGSize cellSize = CGSizeMake(10, 10);
+    
+    UIGraphicsBeginImageContext(CGSizeMake(mazeSize.width * cellSize.width, mazeSize.height * cellSize.height));
+    
+    CGContextRef ref = UIGraphicsGetCurrentContext();
+    
+    NSArray *wideArray = self.maze;
+    NSArray *heightArray = self.maze[0];
+    
+    for (int i = 0; i<wideArray.count; i++) {
+        for (int j = 0; j<heightArray.count; j++) {
+            
+            MZRoom *room = self.maze[i][j];
+            
+            if (!room.hasBeenVisited)
+                continue;
+            
+            [[UIColor orangeColor] setFill];
+            
+            CGPoint c = CGPointMake(i * cellSize.width, j * cellSize.height);
+            
+            if (self.currentRoom.x == i && self.currentRoom.y == j)
+            {
+                CGContextFillRect(ref, CGRectMake(c.x + cellSize.width/2 - 2, c.y + cellSize.height/2 - 2, 4, 4));
+            }
+            
+            //outside walls
+            
+            if (!room.N){
+                CGContextDrawImage(ref, CGRectMake(c.x, c.y, cellSize.width, cellSize.height), [UIImage imageNamed:@"nc"].CGImage);
+            }
+            
+            if (!room.S){
+                CGContextDrawImage(ref, CGRectMake(c.x, c.y, cellSize.width, cellSize.height), [UIImage imageNamed:@"sc"].CGImage);
+            }
+            
+            if (!room.E){
+                CGContextDrawImage(ref, CGRectMake(c.x, c.y, cellSize.width, cellSize.height), [UIImage imageNamed:@"ec"].CGImage);
+            }
+            
+            if (!room.W){
+                CGContextDrawImage(ref, CGRectMake(c.x, c.y, cellSize.width, cellSize.height), [UIImage imageNamed:@"wc"].CGImage);
+            }
+            
+        }
+    }
+    
+    UIImage *output = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return output;
 }
 
 @end
