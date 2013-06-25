@@ -10,6 +10,7 @@
 
 @interface TRObject : SKSpriteNode
 
+@property (nonatomic, weak) SKPhysicsWorld *physicsWorld;
 -(void)update:(CFTimeInterval)currentTime;
 
 @end

@@ -58,12 +58,13 @@
         //[self addChild:jumpPad];
         
         player = [[TRPlayer alloc] initWithPosition:CGPointMake(size.width/2, size.height/2)];
+        player.physicsWorld = self.physicsWorld;
         [sceneNode addChild:player];
         
         maze = [[MZMaze alloc] initWithSize:CGSizeMake(10, 10)];
         
         mini = [[SKSpriteNode alloc] initWithTexture:[SKTexture textureWithImage:[maze render]] color:nil size:CGSizeMake(100, 100)];
-        mini.position = player.position;
+        mini.position = CGPointMake(50, self.size.height - 50);
         [sceneNode addChild:mini];
         
         [self drawRoomAtX:maze.currentRoom.x y:maze.currentRoom.y];
@@ -162,6 +163,7 @@
     
     [player update:currentTime];
     [movePad update:currentTime];
+    [strikePad update:currentTime];
     
     [self switchRooms];
 }
@@ -171,20 +173,17 @@
     if (pad == movePad){
         [player runInDirection:direction intensity:intensity];
     }
-}
-
--(void)controlPad:(JCControlPad *)pad beganTouch:(UITouch *)touch
-{
-    if (pad == strikePad){
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"endGame" object:nil];
-        [player strike:YES];
+    
+    if (pad == strikePad)
+    {
+        [player strike:YES direction:direction intensity:intensity];
     }
 }
 
 -(void)controlPad:(JCControlPad *)pad endedTouch:(UITouch *)touch
 {
     if (pad == strikePad){
-        [player strike:NO];
+        [player strike:NO direction:0 intensity:0];
     }
 }
 
