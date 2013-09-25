@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.6" systemVersion="12E3067" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="gVn-JX-esd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="gVn-JX-esd">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.6"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Menu View Controller-->
         <scene sceneID="qKu-fZ-KMX">
             <objects>
                 <viewController id="gVn-JX-esd" customClass="TRMenuViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="63q-Kx-6OR"/>
+                        <viewControllerLayoutGuide type="bottom" id="5cG-ZA-UY8"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="A6W-jy-AMx">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3S0-bB-Ir7">
-                                <rect key="frame" x="453" y="135" width="95" height="51"/>
+                                <rect key="frame" x="453" y="135" width="95" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="C3w-l2-yLv"/>
                                     <constraint firstAttribute="width" constant="95" id="X3Y-Vc-gN4"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" title="Go >">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="LVB-YS-i5n" kind="modal" id="kRb-he-0tH"/>
@@ -73,6 +73,10 @@
         <scene sceneID="CtS-rA-C9T">
             <objects>
                 <viewController id="LVB-YS-i5n" customClass="TRViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XF0-34-HtF"/>
+                        <viewControllerLayoutGuide type="bottom" id="fsR-QV-nlA"/>
+                    </layoutGuides>
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="bdc-N1-crn" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

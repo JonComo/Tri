@@ -42,7 +42,7 @@
         wallsNode = [SKNode new];
         [self addChild:wallsNode];
         
-        self.physicsWorld.gravity = CGPointZero;
+        self.physicsWorld.gravity = CGVectorMake(0, 0);
         
         int controlSize = 80;
         

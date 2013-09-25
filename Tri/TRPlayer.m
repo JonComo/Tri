@@ -75,17 +75,23 @@
 
 -(void)runInDirection:(float)direction intensity:(float)intensity
 {
-    intensity *= 200;
+    intensity *= 400;
     
-    CGPoint force = CGPointMake(cosf(direction) * intensity, sinf(direction) * intensity);
+    float degrees = direction * 180/M_PI;
+    
+    float sectioned = round(degrees / 45) * 45;
+    
+    direction = sectioned * M_PI/180;
+    
+    CGVector force = CGVectorMake(cosf(direction) * intensity, sinf(direction) * intensity);
     [self.physicsBody applyForce:force];
     
-    self.xScale = force.x > 0 ? 1 : -1;
+    self.xScale = force.dx > 0 ? 1 : -1;
 }
 
 -(void)update:(CFTimeInterval)currentTime
 {
-    self.physicsBody.velocity = CGPointMake(self.physicsBody.velocity.x * 0.8, self.physicsBody.velocity.y * 0.8);
+    self.physicsBody.velocity = CGVectorMake(self.physicsBody.velocity.dx * 0.8, self.physicsBody.velocity.dy * 0.8);
 }
 
 -(void)strike:(BOOL)strike direction:(float)direction intensity:(float)intensity
@@ -109,16 +115,19 @@
             
             [self.parent addChild:wielding];
             
-            wielding.position = CGPointMake(self.position.x + (self.xScale > 0 ? 25 : -25), self.position.y + 30);
+            wielding.position = CGPointMake(self.position.x + (self.xScale > 0 ? 50 : -50), self.position.y + 30);
             
-            wieldingJoint = [SKPhysicsJointPin jointWithBodyA:self.physicsBody bodyB:wielding.physicsBody anchor:CGPointMake(wielding.position.x, wielding.position.y - wielding.size.height/2)];
+            wieldingJoint = [SKPhysicsJointPin jointWithBodyA:self.physicsBody bodyB:wielding.physicsBody anchor:CGPointMake(100, 100)];
             
             wieldingJoint.frictionTorque = 0.1;
             
             [self.physicsWorld addJoint:wieldingJoint];
         }
         
-        [wielding.physicsBody applyForce:[JCMath pointFromPoint:CGPointZero pushedBy:300 inDirection:direction]];
+        CGPoint strikePoint = [JCMath pointFromPoint:CGPointZero pushedBy:300 inDirection:direction];
+        [wielding.physicsBody applyForce:CGVectorMake(strikePoint.x, strikePoint.y)];
+        
+        NSLog(@"Position: %f %f", wielding.position.x, wielding.position.y);
         
     }else{
         [self.physicsWorld removeJoint:wieldingJoint];
